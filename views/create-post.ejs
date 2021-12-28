@@ -9,7 +9,7 @@
     <%- include('includes/header') %>
     <main>
       <h1>Add a new post</h1>
-      <form action="..." method="...">
+      <form action="/posts" method="post">
         <div class="form-control">
           <label for="title">Title</label>
           <input type="text" id="title" name="title" required />
@@ -33,7 +33,7 @@
           <!-- prettier-ignore -->
           <select id="author" name="author">
             <% for (const author of authors) { %>
-              <option value="<%- author.id %>"><%- author.name %></option>
+              <option value="<%- author._id %>"><%- author.name %></option>
             <% } %>
           </select>
         </div>

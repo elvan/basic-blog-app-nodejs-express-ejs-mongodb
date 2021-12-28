@@ -8,7 +8,7 @@ let database;
 
 async function connect() {
   const client = await MongoClient.connect(mongodbUrl);
-  database = client.db('basic-blog-app-nodejs-express-ejs');
+  database = client.db('basic-blog-app-nodejs');
 }
 
 function getDb() {

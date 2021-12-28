@@ -7,8 +7,21 @@
 
   <body>
     <%- include('includes/header') %>
+    <!-- prettier-ignore -->
     <main id="all-posts">
       <h1>All Posts</h1>
+      <% if (!posts || posts.length === 0) { %>
+        <p>No posts found. Maybe start adding some?</p>
+        <a class="btn" href="/new-post">Create a new Post</a>
+      <% } else {%>
+        <ol id="posts-list">
+          <% for (const post of posts) { %>
+            <li>
+              <%- include('includes/post-item.ejs', { post })  %>
+            </li>
+          <% } %>
+        </ol>
+      <% } %>
     </main>
   </body>
 </html>
