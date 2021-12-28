@@ -58,4 +58,24 @@ router.post('/posts', async (req, res) => {
   res.redirect('/posts');
 });
 
+router.get('/posts/:id', async (req, res) => {
+  const post = await db
+    .getDb()
+    .collection('posts')
+    .findOne({ _id: new ObjectId(req.params.id) });
+
+  if (!post) {
+    return res.status(404).render('404');
+  }
+
+  post.humanDate = post.date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  res.render('post-detail', { post });
+});
+
 module.exports = router;

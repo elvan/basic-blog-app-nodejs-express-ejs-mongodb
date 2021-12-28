@@ -8,11 +8,17 @@
   <body>
     <%- include('includes/header') %>
     <main id="post-detail">
-      <h1>...</h1>
-      <section id="post-meta">...</section>
+      <h1><%- post.title %></h1>
+      <section id="post-meta">
+        <address>
+          <a href="mailto:<%- post.author.email %>"><%- post.author.name %></a>
+        </address>
+        <time datetime="<%- post.date %>"><%- post.humanDate %></time>
+      </section>
       <hr />
       <section>
-        <p id="body">...</p>
+        <h3><%- post.summary %></h3>
+        <p id="body"><%- post.body %></p>
       </section>
     </main>
   </body>
