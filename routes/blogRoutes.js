@@ -57,7 +57,15 @@ router.post('/posts', async (req, res) => {
   res.redirect('/posts');
 });
 
-router.get('/posts/:id', async (req, res) => {
+router.get('/posts/:id', async (req, res, next) => {
+  let postId = req.params.id;
+
+  try {
+    postId = new ObjectId(postId).toString();
+  } catch (error) {
+    return res.status(404).render('404');
+  }
+
   const post = await db
     .getDb()
     .collection('posts')
@@ -78,7 +86,13 @@ router.get('/posts/:id', async (req, res) => {
 });
 
 router.get('/posts/:id/edit', async (req, res) => {
-  const postId = req.params.id;
+  let postId = req.params.id;
+
+  try {
+    postId = new ObjectId(postId).toString();
+  } catch (error) {
+    return res.status(404).render('404');
+  }
 
   const post = await db
     .getDb()
