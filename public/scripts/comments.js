@@ -38,7 +38,7 @@ async function fetchCommentsForPost() {
   commentsSectionEl.appendChild(commentsListEl);
 }
 
-function saveComment(event) {
+async function saveComment(event) {
   event.preventDefault();
 
   const postId = loadCommentsButtonEl?.dataset.postid;
@@ -46,12 +46,22 @@ function saveComment(event) {
   const text = commentTextEl.value;
 
   const comment = {
-    postId,
     title,
     text,
   };
 
-  console.log(comment);
+  commentTitleEl.value = '';
+  commentTextEl.value = '';
+
+  await fetch(`/posts/${postId}/comments`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(comment),
+  });
+
+  fetchCommentsForPost();
 }
 
 loadCommentsButtonEl?.addEventListener('click', fetchCommentsForPost);
