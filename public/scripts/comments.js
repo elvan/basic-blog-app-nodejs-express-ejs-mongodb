@@ -55,18 +55,25 @@ async function saveComment(event) {
     text,
   };
 
-  commentTitleEl.value = '';
-  commentTextEl.value = '';
+  try {
+    const response = await fetch(`/posts/${postId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(comment),
+    });
 
-  await fetch(`/posts/${postId}/comments`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(comment),
-  });
-
-  fetchCommentsForPost();
+    if (response.ok) {
+      fetchCommentsForPost();
+      commentTitleEl.value = '';
+      commentTextEl.value = '';
+    } else {
+      throw new Error('Failed to save comment');
+    }
+  } catch (error) {
+    alert(error);
+  }
 }
 
 loadCommentsButtonEl?.addEventListener('click', fetchCommentsForPost);
