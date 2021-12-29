@@ -33,9 +33,14 @@ async function fetchCommentsForPost() {
 
   const comments = await response.json();
 
-  const commentsListEl = createCommentsList(comments);
-  commentsSectionEl.innerHTML = '';
-  commentsSectionEl.appendChild(commentsListEl);
+  if (comments?.length > 0) {
+    const commentsListEl = createCommentsList(comments);
+    commentsSectionEl.innerHTML = '';
+    commentsSectionEl.appendChild(commentsListEl);
+  } else {
+    commentsSectionEl.firstElementChild.textContent =
+      'We could not find any comments. Maybe you should add one?';
+  }
 }
 
 async function saveComment(event) {
