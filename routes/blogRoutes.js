@@ -75,14 +75,14 @@ router.get('/posts/:id', async (req, res, next) => {
     return res.status(404).render('404');
   }
 
-  post.humanDate = post.date.toLocaleDateString('en-US', {
+  post.humanReadableDate = post.date.toLocaleDateString('en-US', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 
-  res.render('post-detail', { post });
+  res.render('post-detail', { post, comments: null });
 });
 
 router.get('/posts/:id/edit', async (req, res) => {
@@ -138,6 +138,28 @@ router.post('/posts/:id/delete', async (req, res) => {
   await db.getDb().collection('posts').deleteOne({ _id: postId });
 
   res.redirect('/posts');
+});
+
+router.get('/posts/:id/comments', async function (req, res) {
+  const postId = new ObjectId(req.params.id);
+  const comments = await db
+    .getDb()
+    .collection('comments')
+    .find({ postId: postId })
+    .toArray();
+
+  res.json(comments);
+});
+
+router.post('/posts/:id/comments', async function (req, res) {
+  const postId = new ObjectId(req.params.id);
+  const newComment = {
+    postId: postId,
+    title: req.body.title,
+    text: req.body.text,
+  };
+  await db.getDb().collection('comments').insertOne(newComment);
+  res.redirect('/posts/' + req.params.id);
 });
 
 module.exports = router;
